@@ -2,6 +2,7 @@ from pokercard import PokerCard
 from calculator import Calculator
 
 def main():
+    # example usage
     hand1 = [PokerCard("K", "Spades"), PokerCard("K", "Hearts")]
     hand2 = [PokerCard("A", "Clubs"), PokerCard("K", "Clubs")]
     calc = Calculator(hand1, hand2)
