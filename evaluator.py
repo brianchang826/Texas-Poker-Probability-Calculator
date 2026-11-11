@@ -14,12 +14,12 @@ class HandValueEvaluator:
         self.seven_cards_suits_set = list(set(self.seven_cards_suits))
         self.straight_value = None
 
-    def determine_handvalue(self) -> list[int] | None:
+    def determine_handvalue(self) -> list[int]:
         for check in [self._check_straight_flush, self._check_four_of_a_kind, self._check_full_house, self._check_flush, self._check_straight, self._check_three_of_a_kind, self._check_two_pairs, self._check_one_pair, self._check_high_card]:
             result = check()
             if result:
                 return result
-        return None
+        return []
 
     def _check_straight_flush(self):
 

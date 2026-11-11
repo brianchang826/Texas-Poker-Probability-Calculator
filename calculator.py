@@ -12,7 +12,7 @@ class Calculator:
         self.hand1 = hand1
         self.hand2 = hand2
         self.deck = []
-        self.results_all = None
+        self.results_all = []
         
     def initialize_deck(self):
         self.deck = []
@@ -29,7 +29,7 @@ class Calculator:
 
     @property
     def public_cards_all_combinations(self):
-        return list(combinations(self.deck, 5))
+        return combinations(self.deck, 5)
 
     def compare_hands(self, public_cards):
         h1_values = HandValueEvaluator(self.hand1, list(public_cards)).determine_handvalue()
