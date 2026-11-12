@@ -2,6 +2,7 @@ from itertools import combinations
 from collections import Counter
 import multiprocessing
 import time
+import math
 from evaluator import HandValueEvaluator
 from pokercard import PokerCard, POKERCARDS_SUIT_DICT, POKERCARDS_VALUE_DICT
 
@@ -29,7 +30,7 @@ class Calculator:
 
     @property
     def public_cards_all_combinations(self):
-        return combinations(self.deck, 5)
+        return combinations(self.deck, 7 - len(self.hand1))
 
     def compare_hands(self, public_cards):
         h1_values = HandValueEvaluator(self.hand1, list(public_cards)).determine_handvalue()
@@ -50,14 +51,17 @@ class Calculator:
         with multiprocessing.Pool(processes=process_count) as pool:
             self.results_all = pool.map(self.compare_hands, self.public_cards_all_combinations)
     
-        print(f"Duration: {round(time.time() - start, 2)}s ({round((1712304 / (time.time() - start)), 2)}it/s)")
+        print(f"Duration: {round(time.time() - start, 2)}s ({round((self._combination_count / (time.time() - start)), 2)}it/s)")
 
-    @staticmethod
-    def _num_to_percentage(n: int):
-        return round((n*100 / 1712304), 2)
+    def _num_to_percentage(self, n: int):
+        return round((n*100 / self._combination_count), 2)
+
+    @property
+    def _combination_count(self):
+        return math.comb(len(self.deck), 7 - len(self.hand1))
 
     def _print_result(self, result_name: str, results: list[str], ranks: list[int] | None):
-        print(f"{result_name} win rate: {round((results.count(result_name)*100 / 1712304), 2)}%")
+        print(f"{result_name} win rate: {round((results.count(result_name)*100 / self._combination_count), 2)}%")
         
         if result_name != "tie":
             ranks_counts = Counter(ranks)
